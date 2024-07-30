@@ -4,12 +4,13 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
 def main():
+    count=0
     driver = webdriver.Firefox()
     driver.implicitly_wait(7)
     wait = WebDriverWait(driver, timeout=7)
     precon_market_vs_listing = {}
 
-    found_precons = run_facebook_script(driver,wait,"magic the gathering commander precon", 25) # Getting the dictionary of all the found 
+    found_precons = run_facebook_script(driver,wait,"magic the gathering commander precon", 30) # Getting the dictionary of all the found 
     
     print(found_precons)
 
@@ -31,8 +32,9 @@ def main():
 
     # Printing out everything at the end
     for key,value in precon_market_vs_listing.items():
+        count+=1
         print(f'precon: {key}\nmarket price: {value[0]}\nlisting price: {value[1]}\nlink: {value[2]}\n---------------------')
-
+    print(count)
     driver.quit() # Nicely close any browser open
 
 if __name__ == '__main__':

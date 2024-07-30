@@ -10,9 +10,6 @@ import pyautogui # This import is for clicking the annoying would you allow ads 
 from info import email, password
 
 URL = "https://www.facebook.com/marketplace/minneapolis"
-# driver = webdriver.Firefox()
-# driver.implicitly_wait(7)
-# wait = WebDriverWait(driver, timeout=2)
 found_precon_dictionary = {}
 
 def facebook_login(driver, wait):
@@ -53,19 +50,24 @@ def facebook_search(driver, wait, card, scrolls):
         print("No pop ups requested")
 
     finally:
+
         # Scrolling down on the website to load options
         for i in range (scrolls):
             driver.execute_script('window.scrollBy(0, 2000)')
             time.sleep(1)
 
+        driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.CONTROL + Keys.HOME) # Goes back to the top of the page
+        time.sleep(1)
+
         # Loop that opens up each relevant listing
         html_list = (driver.find_elements(By.XPATH, './/div[@class = "x9f619 x78zum5 x1r8uery xdt5ytf x1iyjqo2 xs83m0k x1e558r4 x150jy0e x1iorvi4 xjkvuk6 xnpuxes x291uyu x1uepa24"]'))
         del html_list[-8:] # Delete the last 8 elements, some bug causes one class to have 8 more than the other
         for listing in html_list:
-            time.sleep(4) # Avoid getting detected
+            time.sleep(0.5) # Avoid getting detected
 
             deck_found = False # No deck has bee found yet
             in_description = False # Does not know if its in the description
+            shipping = False
 
             # Parsing all of the important info on the main page          
             listing_link = listing.find_element(By.XPATH, './/a[@class = "x1i10hfl xjbqb8w x1ejq31n xd10rxx x1sy0etr x17r0tee x972fbf xcfux6l x1qhh985 xm0m39n x9f619 x1ypdohk xt0psk2 xe8uvvx xdj266r x11i5rnm xat24cr x1mh8g0r xexx8yu x4uap5 x18d9i69 xkhd6sd x16tdsg8 x1hl2dhg xggy1nq x1a2a7pz x1heor9g x1sur9pj xkrqix3 x1lku1pv"]').get_attribute('href')
@@ -122,14 +124,17 @@ def facebook_search(driver, wait, card, scrolls):
                     # Loop through the list again, extracting names and new price values 
                     for precon_name in precon_list: 
                         for description_line in description_split_by_newline:
+                            #print(description_line)
                             if precon_name in description_line:
+                                print("match found")
 
                                 # Get shipping cost (This system is janky)
                                 if (shipping) and (count_for_ship == 0):
                                     print(listing_location)
                                     shipping_cost = get_shipping_cost(listing,wait, driver,True)
                                     count_for_ship = 1 # Doing this count so this doesnt execute multiple times 
-
+                                
+                                print(precon_name + " " +  listing_link)
                                 if (re.search("sold", description_line) == None): # Checking if the deck has not been sold
                                     listing_price = re.findall(r'\d+', description_line)
                                     in_description = True
@@ -142,8 +147,10 @@ def facebook_search(driver, wait, card, scrolls):
                                     
                                     max = float(max)
 
+                                    print(precon_name)
+
                                     found_precon_dictionary[precon_name] = [(max + shipping_cost), listing_link, listing_location, in_description]
-                    time.sleep(4)
+                    time.sleep(2)
                     driver.back()
                     wait.until(EC.visibility_of,(By.XPATH, './/div[@class = "x9f619 x78zum5 x1r8uery xdt5ytf x1iyjqo2 xs83m0k x1e558r4 x150jy0e x1iorvi4 xjkvuk6 xnpuxes x291uyu x1uepa24"]'))
                 
@@ -158,6 +165,8 @@ def get_shipping_cost(listing, wait, driver,in_listing):
         listing.click()
         wait.until(EC.invisibility_of_element_located,(By.XPATH, '//span[@class = "x193iq5w xeuugli x13faqbe x1vvkbs x10flsy6 x1lliihq x1s928wv xhkezso x1gmr53x x1cpjm7i x1fgarty x1943h6x x1tu3fi x3x7a5m x1lkfr7t x1lbecb7 x1s688f xzsf02u"]')) 
     
+    time.sleep(2) # Time added to prevent detection
+
     # Finds the shipping description and extracts the number, which is returned
     try:                                                            
         shipping_desc = listing.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[3]/div[2]/div/div/div[2]/div/div[2]/div/div[2]/div[1]/div[3]/div[2]/div/div[1]/div/div/div[2]/div/div/span').text # Gets the shipping cost
