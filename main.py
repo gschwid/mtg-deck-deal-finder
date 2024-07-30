@@ -10,7 +10,7 @@ def main():
     wait = WebDriverWait(driver, timeout=7)
     precon_market_vs_listing = {}
 
-    found_precons = run_facebook_script(driver,wait,"magic the gathering commander precon", 30) # Getting the dictionary of all the found 
+    found_precons = run_facebook_script(driver,wait,"magic the gathering commander precon", 0) # Getting the dictionary of all the found 
     
     print(found_precons)
 
