@@ -8,7 +8,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 def search_mtg(card,driver,wait):
-    
     try:
         search_card = x = re.sub("\s", "+", card) # Replacing spaces with + so it matches how the search works
         URL = f'https://www.tcgplayer.com/search/magic/product?productLineName=magic&q={search_card}&view=grid&inStock=true&page=1'

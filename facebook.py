@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from precon_list import precon_list
+import difflib
 import re
 import pyautogui # This import is for clicking the annoying would you allow ads on facebook
 from info import email, password
@@ -95,7 +96,8 @@ def facebook_search(driver, wait, card, scrolls):
 
             # Create dictionary of values with matches
             for precon_name in precon_list:
-                if precon_name in listing_name:
+                if find_similar_substring(precon_name, listing_name):
+                #if precon_name in listing_name:
 
                     # Checking if it is being shipped, if so it will get the shipping cost
                     if listing_location == "Ships to you":
@@ -124,8 +126,8 @@ def facebook_search(driver, wait, card, scrolls):
                     # Loop through the list again, extracting names and new price values 
                     for precon_name in precon_list: 
                         for description_line in description_split_by_newline:
-                            #print(description_line)
-                            if precon_name in description_line:
+                            if find_similar_substring(precon_name, description_line):
+                            #if precon_name in description_line:
                                 print("match found")
 
                                 # Get shipping cost (This system is janky)
@@ -189,6 +191,31 @@ def get_shipping_cost(listing, wait, driver,in_listing):
 def run_facebook_script(driver, wait, search, scrolls):
     facebook_login(driver, wait)
     return facebook_search(driver, wait, search, scrolls)
+
+# Function for finding deck names in listing, finding "close enough" matches if the deck name isnt spelled exactly correct
+def find_similar_substring(deck_name,listing):
+    listing_words = listing.split()
+    deck_words = deck_name.split()
+    count = 0
+
+    print(deck_words)
+    print('--------')
+    print(listing_words)
+    print('\n')
+
+    for i in deck_words:
+        matching_result = difflib.get_close_matches(i, listing_words, n=1, cutoff=0.8)
+        print(matching_result)
+
+        if matching_result: # Match for word found
+            count +=1
+    
+    if count == len(deck_words):
+        return True
+    
+    else:
+        return False
+    
 
         
 
