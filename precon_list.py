@@ -81,7 +81,7 @@ precon_list = [
 
     "cabaretti cacophony",
     "obscura operation",
-    "riveteer rampage",
+    "riveteers rampage",
     "maestros massacre",
     "bedecked brokers",
 

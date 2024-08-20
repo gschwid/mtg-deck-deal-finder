@@ -2,6 +2,7 @@ from facebook import run_facebook_script
 from tcg import search_mtg
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
+import time
 
 def main():
     count=0
@@ -27,7 +28,6 @@ def main():
 
             # Creating a final dictionary of all the good deals
             if percentage_saved >= 20:
-
                 print(f"{key}, Market: {market_price}, Listing: {listing_price}, Percentage Saved: {percentage_saved}, Link: {value[1]}")
 
     # Printing out everything at the end
@@ -35,7 +35,7 @@ def main():
         count+=1
         print(f'precon: {key}\nmarket price: {value[0]}\nlisting price: {value[1]}\nlink: {value[2]}\n---------------------')
     print(count)
-    driver.quit() # Nicely close any browser open
+    driver.quit() # Nicely close an\ browser open
 
 if __name__ == '__main__':
     main()

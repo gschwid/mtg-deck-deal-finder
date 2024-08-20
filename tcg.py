@@ -9,6 +9,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 def search_mtg(card,driver,wait):
     try:
+        card = re.sub("\d+", "", card)
+
         search_card = x = re.sub("\s", "+", card) # Replacing spaces with + so it matches how the search works
         URL = f'https://www.tcgplayer.com/search/magic/product?productLineName=magic&q={search_card}&view=grid&inStock=true&page=1'
     
@@ -46,3 +48,9 @@ def search_mtg(card,driver,wait):
     except:
         print(f"{card} is out of stock")
         return -1
+
+# driver = webdriver.Firefox()
+# driver.implicitly_wait(7)
+# wait = WebDriverWait(driver, timeout=7)
+
+# search_mtg('riveteers rampage', driver, wait)
