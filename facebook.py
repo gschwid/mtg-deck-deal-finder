@@ -139,17 +139,18 @@ def facebook_search(driver, wait, card, scrolls):
                                 if (re.search("sold", description_line) == None): # Checking if the deck has not been sold
                                     listing_price = re.findall(r'\d+', description_line)
                                     in_description = True
-
+    
                                     # Sometimes multiple numbers are picked up if the listing has multiple decks
-                                    max = float(listing_price[0])
+                                    max = 0
                                     for i in listing_price:
                                         print(f'Found {i}, Current max is {max}')
-                                        if float(i) > max:
+                                        if (float(i) > max) and (float(i) < 200) and (float(i) > 14):
                                             max = i
-                                    
                                     max = float(max)
-                                    print(description_line)
-                                    print(max)
+                                    
+                                    # Case where max value was not avle to update
+                                    if (max == 0):
+                                        max = float(listing_price)
 
                                     print(f"match found in description: {precon_name}")
 

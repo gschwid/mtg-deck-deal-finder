@@ -14,7 +14,7 @@ Since neither Facebook Marketplace nor TCGPlayer offers APIs, this project uses 
 
 4. Market Comparison: It then searches TCGPlayer for the official market prices of the identified decks.
 
-5. Deal Detection: By comparing the Facebook Marketplace prices with TCGPlayer prices, the script calculates the percentage discount. the deals are then defined in [this]() text file. 
+5. Deal Detection: By comparing the Facebook Marketplace prices with TCGPlayer prices, the script calculates the percentage discount. the deals are then defined in [this](https://github.com/gschwid/mtg-deck-deal-finder/blob/main/found%20deals.md) text file. 
 
 ## Biggest challenges
 1) **Deck Name Variability**: Listings often contained misspelled or varied representations of deck names, which led to missed deals when using simple substring matching. To tackle this, I employed the `difflib` library to find close matches between words. By breaking down both the listing titles and deck names into individual words and comparing them, I counted matches to determine if a listing was relevant. This approach significantly improved the accuracy of identifying deck names despite variations in spelling or phrasing.
