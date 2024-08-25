@@ -29,6 +29,7 @@ def facebook_login(driver, wait):
 
     # Clicking the login button
     driver.find_element(By.XPATH, "/html/body/div[1]/div/div[1]/div/div[5]/div/div/div[1]/div/div[2]/div/div/div/div[2]/form/div/div[5]/div").click()
+    time.sleep(2)
 
 def facebook_search(driver, wait, card, scrolls):
     deck_found = False
