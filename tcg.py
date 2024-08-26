@@ -49,8 +49,8 @@ def search_mtg(card,driver,wait):
         print(f"{card} is out of stock")
         return -1
 
-# driver = webdriver.Firefox()
-# driver.implicitly_wait(7)
-# wait = WebDriverWait(driver, timeout=7)
+driver = webdriver.Firefox()
+driver.implicitly_wait(7)
+wait = WebDriverWait(driver, timeout=7)
 
-# search_mtg('riveteers rampage', driver, wait)
+search_mtg('exit from exile', driver, wait)

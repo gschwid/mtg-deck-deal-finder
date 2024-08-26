@@ -129,7 +129,9 @@ def facebook_search(driver, wait, card, scrolls):
                     # Loop through the list again, extracting names and new price values 
                     for precon_name in precon_list: 
                         for description_line in description_split_by_newline:
+                            description_line = re.sub(r'-(\d)', r' -\1', description_line)
                             if find_similar_substring(precon_name, description_line):
+                                print(f"{precon_name} {description_line}")
                             #if precon_name in description_line:
 
                                 # Get shipping cost (This system is janky)
@@ -138,20 +140,20 @@ def facebook_search(driver, wait, card, scrolls):
                                     count_for_ship = 1 # Doing this count so this doesnt execute multiple times 
                                 
                                 if (re.search("sold", description_line) == None): # Checking if the deck has not been sold
-                                    listing_price = re.findall(r'\d+', description_line)
+                                    listing_price_new = re.findall(r'\d+', description_line)
+                                    
+                                    # Case where no number is in the description
+                                    if listing_price_new == []:
+                                        listing_price_new = [listing_price]
+
                                     in_description = True
     
                                     # Sometimes multiple numbers are picked up if the listing has multiple decks
                                     max = 0
-                                    for i in listing_price:
-                                        print(f'Found {i}, Current max is {max}')
+                                    for i in listing_price_new:
                                         if (float(i) > max) and (float(i) < 200) and (float(i) > 14):
-                                            max = i
+                                            max = float(i)
                                     max = float(max)
-                                    
-                                    # Case where max value was not avle to update
-                                    if (max == 0):
-                                        max = float(listing_price)
 
                                     print(f"match found in description: {precon_name}")
 
@@ -162,10 +164,11 @@ def facebook_search(driver, wait, card, scrolls):
                     wait.until(EC.visibility_of,(By.XPATH, './/div[@class = "x9f619 x78zum5 x1r8uery xdt5ytf x1iyjqo2 xs83m0k x1e558r4 x150jy0e x1iorvi4 xjkvuk6 xnpuxes x291uyu x1uepa24"]'))
                 
                 except: # If it is not found
-                    print("Exception")
+                    print("No description in listing")
                     driver.back()
                     wait.until(EC.visibility_of,(By.XPATH, './/div[@class = "x9f619 x78zum5 x1r8uery xdt5ytf x1iyjqo2 xs83m0k x1e558r4 x150jy0e x1iorvi4 xjkvuk6 xnpuxes x291uyu x1uepa24"]'))
-        
+        print(found_precon_dictionary)
+        print(len(found_precon_dictionary))
         return found_precon_dictionary
     
 def get_shipping_cost(listing, wait, driver,in_listing):
@@ -224,5 +227,4 @@ def add_to_dict(key,value):
     else:
         found_precon_dictionary[key] = value
 
-        
 
