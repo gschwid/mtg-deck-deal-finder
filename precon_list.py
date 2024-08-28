@@ -1,4 +1,10 @@
 precon_list = [
+
+    "animated army",
+    "family matters",
+    "peace offering",
+    "squirreled away",
+
     "graveyard overdrive",
     "tricky terrain",
     "eldrazi incursion",

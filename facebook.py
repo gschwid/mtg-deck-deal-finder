@@ -155,6 +155,10 @@ def facebook_search(driver, wait, card, scrolls):
                                             max = float(i)
                                     max = float(max)
 
+                                    # Case where number is found but is too small or big to be accurate
+                                    if max == 0:
+                                        max = listing_price
+
                                     print(f"match found in description: {precon_name}")
 
                                     add_to_dict(precon_name, [(max + shipping_cost), listing_link, listing_location, in_description])
@@ -217,14 +221,20 @@ def find_similar_substring(deck_name,listing):
     else:
         return False
 
-# Letting multiple deck listings be added to the dictionary
+# Finding best offer between decks when multiple offers are found
 def add_to_dict(key,value):
     if key in found_precon_dictionary.keys():
-        count = 1
-        while f'{key} {str(count)}' in found_precon_dictionary.keys():
-            count += 1
-        found_precon_dictionary[f'{key}{str(count)}'] = value
+        print(f"{found_precon_dictionary[key][0]} {value[0]}")
+        if found_precon_dictionary[key][0] > value[0]:
+            found_precon_dictionary[key] = value
     else:
         found_precon_dictionary[key] = value
+
+    #     count = 1
+    #     while f'{key} {str(count)}' in found_precon_dictionary.keys():
+    #         count += 1
+    #     found_precon_dictionary[f'{key}{str(count)}'] = value
+    # else:
+    #     found_precon_dictionary[key] = value
 
 

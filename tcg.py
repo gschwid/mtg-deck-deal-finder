@@ -42,6 +42,7 @@ def search_mtg(card,driver,wait):
             else:
                 price = listing.find('span', class_='product-card__market-price--value')
                 price = float(price.text[1:]) # Getting rid of the $ sign
+                print
 
         return price
     
@@ -49,8 +50,7 @@ def search_mtg(card,driver,wait):
         print(f"{card} is out of stock")
         return -1
 
-driver = webdriver.Firefox()
-driver.implicitly_wait(7)
-wait = WebDriverWait(driver, timeout=7)
-
-search_mtg('exit from exile', driver, wait)
+# driver = webdriver.Firefox()
+# driver.implicitly_wait(7)
+# wait = WebDriverWait(driver, timeout=7)
+# search_mtg("enhanced evolution", driver, wait)
